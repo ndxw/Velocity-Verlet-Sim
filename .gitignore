@@ -1,0 +1,14 @@
+#Ignore everything
+*
+
+#Except
+!.gitignore
+!README.md
+
+!*.pdf
+!*.txt
+
+!*.py
+
+#Even in subdirectories
+!*/
