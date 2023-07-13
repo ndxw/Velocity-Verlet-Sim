@@ -12,8 +12,13 @@ class Object:
         self.vel = vel
         self.acl = acl
 
+    
+
 class Circle(Object):
 
     def __init__(self, radius: float, pos: Vec2D, vel: Vec2D, acl: Vec2D):
         super().__init__(pos, vel, acl)
         self.radius = radius
+
+    def get_radius(self):
+        return self.radius
