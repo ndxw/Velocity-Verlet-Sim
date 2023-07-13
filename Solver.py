@@ -15,5 +15,26 @@ class Solver:
 
     def get_objects(self):
         return self.objects
+    
+    def get_bounds(self):
+        return self.bounds
+    
+    def apply_gravity(self):
+        pass
 
+    def apply_collisions(self):
+        pass
+
+    def apply_bounds(self):
+        pass
+
+    def update_objects(self):
+        pass
+
+    def update_solver(self):
+
+        self.apply_gravity()
+        self.apply_collisions()
+        self.apply_bounds()
+        self.update_objects()
     

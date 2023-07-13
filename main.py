@@ -4,25 +4,18 @@ from OpenGL.GLU import *
 from OpenGL.GLUT import *
 from Solver import *
 
+window_x, window_y = 1500, 1500
+
 def showScreen():
+        
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT) # Remove everything from screen (i.e. displays all black)
         glLoadIdentity()
         iterate()
-        glColor(1.0, 0.0, 0.0)
-        draw_objects()
+
+        # update solver
+        # render
+
         glutSwapBuffers()
-
-def draw_objects():
-    resolution = 30
-
-    glBegin(GL_POLYGON)
-    for vertex in range(resolution):
-        
-        # TODO: draw circle around obj position
-        vertex_x, vertex_y = 0, 0
-
-        glVertex2d(vertex_x, vertex_y)
-    glEnd()
 
 def iterate():
 
@@ -37,7 +30,7 @@ def main():
 
     # ball parameters
     radius = 50
-    pos = Vec2D(500, 500)   # center of bounds
+    pos = Vec2D(500, 500)
     vel = Vec2D(5.0, 5.0)
     acl = Vec2D(0.0, 0.0)
 
