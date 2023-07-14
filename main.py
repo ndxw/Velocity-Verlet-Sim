@@ -3,19 +3,35 @@ from OpenGL.GL import *
 from OpenGL.GLU import *
 from OpenGL.GLUT import *
 from Solver import *
+from Renderer import *
+from time import sleep, perf_counter
 
 window_x, window_y = 1500, 1500
 
+ # ball parameters
+radius = 50
+pos = Vec2D(750, 750)
+vel = Vec2D(10000.0, 5000.0)
+acl = Vec2D(0.0, 0.0)
+
+# create objects
+ball = Circle(radius, pos, vel, acl)
+
+# init solver
+solver = Solver()
+solver.add_object(ball)
+
 def showScreen():
-        
+
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT) # Remove everything from screen (i.e. displays all black)
         glLoadIdentity()
         iterate()
 
-        # update solver
-        # render
+        solver.update_solver()
+        Renderer.render(solver)
 
         glutSwapBuffers()
+        sleep(0.015)    # should be solver.dt (framerate period)
 
 def iterate():
 
@@ -27,20 +43,6 @@ def iterate():
     glLoadIdentity()
 
 def main():
-
-    # ball parameters
-    radius = 50
-    pos = Vec2D(500, 500)
-    vel = Vec2D(5.0, 5.0)
-    acl = Vec2D(0.0, 0.0)
-
-    # create objects
-    ball = Circle(radius, pos, vel, acl)
-
-    # init solver
-    solver = Solver()
-    solver.add_object(ball)
-
 
     glutInit() # Initialize a glut instance which will allow us to customize our window
     glutInitDisplayMode(GLUT_RGBA) # Set the display mode to be colored
