@@ -23,13 +23,31 @@ class Vec2D:
         return Vec2D(vec3_x, vec3_y)
     
     @staticmethod
+    def dot(*vecs):
+        product_x, product_y = 1, 1
+        for vec in vecs:
+            product_x *= vec.x
+            product_y *= vec.y
+        return product_x + product_y
+
+    @staticmethod
     def scale(vec1, scalar = 1.0):
         vec3_x = vec1.x * scalar
         vec3_y = vec1.y * scalar
         return Vec2D(vec3_x, vec3_y)
     
+    # mirrors vector about x-axis
+    def mirror_x(self):
+        self.y *= -1.0
+
+    # mirrors vector about y-axis
+    def mirror_y(self):
+        self.x *= -1.0
+    
     def print(self):
         print(f'({self.x}, {self.y})')
+
+
 
 if __name__ == "__main__":
     vec1 = Vec2D(1.0, 2.0)

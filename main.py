@@ -4,41 +4,48 @@ from OpenGL.GLU import *
 from OpenGL.GLUT import *
 from Solver import *
 from Renderer import *
-from time import sleep, perf_counter
+from time import sleep
+from random import randrange
 
-window_x, window_y = 1500, 1500
-
- # ball parameters
-radius = 50
-pos = Vec2D(750, 750)
-vel = Vec2D(10000.0, 5000.0)
-acl = Vec2D(0.0, 0.0)
-
-# create objects
-ball = Circle(radius, pos, vel, acl)
+WINDOW_W, WINDOW_H = 1000, 1000
+SPAWN_INTERVAL = 0.5
+prev_spawn = 0.0
 
 # init solver
 solver = Solver()
-solver.add_object(ball)
+
+# Generates a ball with a random radius and mass
+def generate_ball():
+     radius = randrange(50, 100, 10)
+     mass = radius
+     pos = Vec2D(WINDOW_W * 0.25, WINDOW_H * 0.75)
+     vel = Vec2D(4000.0, 1000.0)
+     acl = Vec2D(0.0, 0.0)
+     return Circle(radius, pos, vel, acl, mass)
 
 def showScreen():
+    global prev_spawn
 
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT) # Remove everything from screen (i.e. displays all black)
-        glLoadIdentity()
-        iterate()
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT) # Remove everything from screen (i.e. displays all black)
+    glLoadIdentity()
+    iterate()
 
-        solver.update_solver()
-        Renderer.render(solver)
+    solver.update_solver()
+    Renderer.render(solver)
 
-        glutSwapBuffers()
-        sleep(0.015)    # should be solver.dt (framerate period)
+    if solver.time - prev_spawn >= SPAWN_INTERVAL and solver.object_count < solver.MAX_OBJECTS:
+        solver.add_object(generate_ball())
+        prev_spawn = solver.time
+
+    glutSwapBuffers()
+    sleep(0.015)    # should be solver.dt (framerate period)
 
 def iterate():
 
-    glViewport(0, 0, window_x, window_y)
+    glViewport(0, 0, WINDOW_W, WINDOW_H)
     glMatrixMode(GL_PROJECTION)
     glLoadIdentity()
-    glOrtho(0.0, window_x, 0.0, window_y, 0.0, 1.0)
+    glOrtho(0.0, WINDOW_W, 0.0, WINDOW_H, 0.0, 1.0)
     glMatrixMode(GL_MODELVIEW)
     glLoadIdentity()
 
@@ -46,9 +53,9 @@ def main():
 
     glutInit() # Initialize a glut instance which will allow us to customize our window
     glutInitDisplayMode(GLUT_RGBA) # Set the display mode to be colored
-    glutInitWindowSize(window_x, window_y)   # Set the width and height of your window
+    glutInitWindowSize(WINDOW_W, WINDOW_H)   # Set the width and height of your window
     glutInitWindowPosition(0, 0)   # Set the position at which this windows should appear
-    wind = glutCreateWindow('OpenGL Coding Practice') # Give your window a title
+    wind = glutCreateWindow('Velocity-Verlet Physics Simulation') # Give your window a title
     glutDisplayFunc(showScreen)  # Tell OpenGL to call the showScreen method continuously
     glutIdleFunc(showScreen)     # Draw any graphics or shapes in the showScreen function at all times
     glutMainLoop()  # Keeps the window created above displaying/running in a loop

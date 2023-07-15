@@ -1,4 +1,3 @@
-
 from math import *
 from OpenGL.GL import *
 from Solver import *
@@ -14,16 +13,17 @@ class Renderer:
         glColor(1.0, 1.0, 1.0)  # white
 
         glBegin(GL_QUADS)
-        glVertex2d(solver.bounds.left, solver.bounds.down)
-        glVertex2d(solver.bounds.right, solver.bounds.down)
-        glVertex2d(solver.bounds.right, solver.bounds.up)
-        glVertex2d(solver.bounds.left, solver.bounds.up)
+        glVertex2d(solver.BOUNDS.left, solver.BOUNDS.down)
+        glVertex2d(solver.BOUNDS.right, solver.BOUNDS.down)
+        glVertex2d(solver.BOUNDS.right, solver.BOUNDS.up)
+        glVertex2d(solver.BOUNDS.left, solver.BOUNDS.up)
         glEnd()
 
         # render objects
-        glColor(1.0, 0.0, 0.0)  # red
-
         for object in solver.objects:
+
+            glColor(object.colour[0], object.colour[1], object.colour[2])
+
             glBegin(GL_POLYGON)
             for vertex in range(cls.RESOLUTION):
                 
