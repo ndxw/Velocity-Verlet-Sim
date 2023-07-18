@@ -5,7 +5,7 @@ class Vec2D:
     def __init__(self, x, y):
         self.x = float(x)
         self.y = float(y)
-        self.mag = float(sqrt(x**2 + y**2))
+        self.mag = sqrt(x**2 + y**2)
 
     @staticmethod
     def add(*vecs):
@@ -44,18 +44,5 @@ class Vec2D:
     def mirror_y(self):
         self.x *= -1.0
     
-    def print(self):
-        print(f'({self.x}, {self.y})')
-
-
-
-if __name__ == "__main__":
-    vec1 = Vec2D(1.0, 2.0)
-    vec2 = Vec2D(3.0, 4.5)
-    vec3 = Vec2D(-2.5, -7.0)
-
-    sum1 = Vec2D.add(vec1, vec2)
-    sum2 = Vec2D.add(vec1, vec2, vec3)
-
-    print(sum1.x, sum1.y)
-    print(sum2.x, sum2.y)
+    def to_string(self):
+        return f'({self.x}, {self.y})'

@@ -8,7 +8,7 @@ class Object:
         self.vel = vel
         self.acl = acl
         self.mass = mass
-        self.COLLISION_COEFF = 0.75
+        self.COLLISION_COEFF = 0.8
 
         red = random()
         green = random()
@@ -17,14 +17,21 @@ class Object:
 
     def update(self, dt):
 
+        '''=========================================================
+        Equations for Velocity-Verlet integration can be
+        found @ https://en.wikipedia.org/wiki/Verlet_integration
+        '''
+
+        # calculate v(t+0.5*dt)
+        half_adt = Vec2D.scale(self.acl, dt*0.5)
+        half_vel = Vec2D.add(self.vel, half_adt)
+
         # calculate new position
-        vdt = Vec2D.scale(self.vel, dt)
-        adtdt = Vec2D.scale(self.acl, (dt*dt) * 0.5)
-        self.pos = Vec2D.add(self.pos, vdt, adtdt)
+        half_vdt = Vec2D.scale(half_vel, dt)
+        self.pos = Vec2D.add(self.pos, half_vdt)
 
         # calculate new velocity
-        adt = Vec2D.scale(self.acl, dt)
-        self.vel = Vec2D.add(self.vel, adt)
+        self.vel = Vec2D.add(half_vel, half_adt)
 
 
 class Circle(Object):
