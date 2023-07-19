@@ -9,6 +9,8 @@
 !*.txt
 
 !*.py
+!*.cpp
+!*.h
 
 #Even in subdirectories
 !*/

@@ -112,8 +112,7 @@ class Solver:
 
                     update_pos2 = Vec2D.scale(pos_diff_21, 0.5 * overlap / pos_diff_21.mag)
                     object2.pos = Vec2D.add(object2.pos, update_pos2)
-
-                    
+               
     def apply_bounds(self):
 
         for object in self.objects:
