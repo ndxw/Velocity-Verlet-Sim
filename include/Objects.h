@@ -2,7 +2,35 @@
 #define OBJECTS_H
 
 #include <string>
-using namespace std;
+#include <vector>
+
+class Vec2D
+{
+    private:
+        float xComp;
+        float yComp;
+        float len;
+
+        void computeLength();
+
+    public:
+        Vec2D(float, float);
+        ~Vec2D();
+
+        float x();
+        float y();
+        void setX(float);
+        void setY(float);
+        float length();
+
+        Vec2D operator+(Vec2D const&);
+        Vec2D operator-(Vec2D const&);
+        static float dot(Vec2D const&, Vec2D const&);
+        Vec2D operator*(float);
+        void mirrorX();
+        void mirrorY();
+        std::string toString();
+};
 
 class Object
 {  
@@ -12,11 +40,11 @@ class Object
         Vec2D acl;
         float mass;
         float restitutionCoeff;
-        vector<float> colour;
+        std::vector<float> colour;
 
         Object();
-        Object(const Vec2D &, const Vec2D &, const Vec2D &, const float, const float, const vector<float> &);
-        ~Object();
+        Object(const Vec2D &, const Vec2D &, const Vec2D &, 
+                const float, const float, const std::vector<float> &);
 
         void update(float);
 };
@@ -27,51 +55,21 @@ class Circle: public Object
         float radius;
 
         Circle();
-        Circle(float);
+        Circle(const Vec2D &, const Vec2D &, const Vec2D &, 
+                const float, const float, const std::vector<float> &, const float);
         ~Circle();
-}
+};
 
 class RectBounds
 {
-    private:
+    public:
         int left;
         int right;
         int up;
         int down;
 
-    public:
-        RectBounds();
         RectBounds(int, int, int, int);
         ~RectBounds();
-
-        void getBounds(vector<int> &);
-}
-
-class Vec2D
-{
-    private:
-        float x;
-        float y;
-        float length;
-
-        void computeLength();
-
-    public:
-        Vec2D(float, float);
-        ~Vec2D();
-
-        float getX();
-        float getY();
-        void setX(float);
-        void setY(float);
-
-        Vec2D operator+(Vec2D const&);
-        Vec2D operator-(Vec2D const&);
-        static float dot(Vec2D const&, Vec2D const&);
-        Vec2D operator*(float);
-        void mirrorX();
-        void mirrorY();
-        string toString();
 };
 
 #endif

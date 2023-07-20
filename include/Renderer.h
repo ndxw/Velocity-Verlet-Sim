@@ -1,7 +1,7 @@
 #ifndef RENDERER_H
 #define RENDERER_H
 
-#include "Solver.h"
+#include "./Solver.h"
 
 class Renderer
 {
@@ -10,6 +10,6 @@ class Renderer
 
     public:
         static void render(Solver &);
-}
+};
 
 #endif

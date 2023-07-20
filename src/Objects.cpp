@@ -1,4 +1,4 @@
-#include "Objects.h"
+#include "../include/Objects.h"
 #include <string>
 #include <sstream>
 #include <cmath>
@@ -19,14 +19,15 @@ Object::Object()
 }
 
 Object::Object(const Vec2D &pos, const Vec2D &vel, const Vec2D &acl, 
-                const float mass, const float restitutionCoeff, const vector<float> &colour);
+                const float mass, const float restitutionCoeff, 
+                const vector<float> &colour)
 {
-    this.pos = pos;
-    this.vel = vel;
-    this.acl = acl;
-    this.mass = mass;
-    this.restitutionCoeff = restitutionCoeff;
-    this.colour = colour;
+    this->pos = pos;
+    this->vel = vel;
+    this->acl = acl;
+    this->mass = mass;
+    this->restitutionCoeff = restitutionCoeff;
+    this->colour = colour;
 }
 
 Object::~Object()
@@ -42,14 +43,14 @@ void Object::update(float dt)
     */
     
     // calculate v(t+0.5*dt)
-    vector<float> half_adt = this.acl * (0.5*dt);
-    vector<float> half_v = this.vel + half_adt;
+    Vec2D half_adt = this->acl * (0.5*dt);
+    Vec2D half_v = this->vel + half_adt;
 
     // calculate new position
-    this.pos = this.pos + half_v * dt;
+    this->pos = this->pos + half_v * dt;
 
     // calculate new velocity
-    this.vel = half_v + half_adt;
+    this->vel = half_v + half_adt;
 
 }
 
@@ -65,9 +66,17 @@ Circle::Circle()
 
 }
 
-Circle::Circle(float radius)
+Circle::Circle(const Vec2D &pos, const Vec2D &vel, const Vec2D &acl, 
+                const float mass, const float restitutionCoeff, 
+                const vector<float> &colour, const float radius)
 {
-
+    this->pos = pos;
+    this->vel = vel;
+    this->acl = acl;
+    this->mass = mass;
+    this->restitutionCoeff = restitutionCoeff;
+    this->colour = colour;
+    this->radius = radius;
 }
 
 Circle::~Circle()
@@ -81,26 +90,17 @@ RECTANGULAR BOUNDS class
     - distance of four walls to origin
 ====================================================================================
 */
-RectBounds::RectBounds(int left = 0, int right = 0, int up = 1000, int down = 1000)
+RectBounds::RectBounds(int left = 0, int right = 1000, int up = 1000, int down = 0)
 {
-    this.left = left;
-    this.right = right;
-    this.up = up;
-    this.down = down;
+    this->left = left;
+    this->right = right;
+    this->up = up;
+    this->down = down;
 }
 
 RectBounds::~RectBounds()
 {
 
-}
-
-void RectBounds::getBounds(vector<int> &bounds)
-{
-    bounds.clear(); bounds.reserve(4); bounds.resize(4); bounds.shrink_to_fit();
-    bounds[0] = left;
-    bounds[1] = right;
-    bounds[2] = up;
-    bounds[3] = down;
 }
 
 /*
@@ -111,7 +111,7 @@ void RectBounds::getBounds(vector<int> &bounds)
 */
 Vec2D::Vec2D(float x = 0.0, float y = 0.0)
 {
-    this.x = x; this.y = y;
+    xComp = x; yComp = y;
     computeLength();
 }
 
@@ -120,72 +120,77 @@ Vec2D::~Vec2D()
     
 }
 
-float Vec2D::getX()
+float Vec2D::x()
 {
-    return x;
+    return xComp;
 }
 
-float Vec2D::getY()
+float Vec2D::y()
 {
-    return y;
+    return yComp;
 }
 
 void Vec2D::setX(float newX)
 {
-    x = newX; 
+    xComp = newX; 
     computeLength();
 }
 
 void Vec2D::setY(float newY)
 {
-    y = newY; 
+    yComp = newY; 
     computeLength();
+}
+
+float Vec2D::length()
+{
+    return len;
 }
 
 void Vec2D::computeLength()
 {
-    length = sqrt(pow(x, 2) + pow(y, 2));
+    len = sqrt(pow(xComp, 2) + pow(yComp, 2));
 }
 
 Vec2D Vec2D::operator+(Vec2D const& addend)
 {
     Vec2D sum;
-    sum.x = x + addend.x;
-    sum.y = y + addend.y;
+    sum.xComp = xComp + addend.xComp;
+    sum.yComp = yComp + addend.yComp;
     return sum;
 }
 
 Vec2D Vec2D::operator-(Vec2D const& subtrahend)
 {
     Vec2D difference;
-    difference.x = x - subtrahend.x;
-    difference.y = y - subtrahend.y;
+    difference.xComp = xComp - subtrahend.xComp;
+    difference.yComp = yComp - subtrahend.yComp;
     return difference;
 }
 
 Vec2D Vec2D::operator*(float scalar)
 {
     Vec2D scaled;
-    scaled.x = x * scalar;
-    scaled.y = y * scalar;
+    scaled.xComp = xComp * scalar;
+    scaled.yComp = yComp * scalar;
     return scaled;
 }
 
-static float Vec2D::dot(Vec2D const& vec1, Vec2D const& vec2)
+float Vec2D::dot(Vec2D const& vec1, Vec2D const& vec2)
 {
-    return vec1.x * vec2.x + vec1.y * vec2.y;
+    return vec1.xComp * vec2.xComp + vec1.yComp * vec2.yComp;
 }
 
 // mirrors this vector about the x-axis
 void Vec2D::mirrorX()
 {
-    y = -y;
+    yComp = -yComp;
 }
 
 // mirrors this vector about the y-axis
 void Vec2D::mirrorY()
 {
-    x = -x;
+    xComp = -xComp;
 }
 
 // outputs this vector in the form (x, y)
@@ -195,6 +200,6 @@ string Vec2D::toString()
     ssx << x;
     ssy << y;
 
-    string output = "(" + ssx.str() + ", " + ssy.str() + ")"
+    string output = "(" + ssx.str() + ", " + ssy.str() + ")";
     return output;
 }
