@@ -2,7 +2,6 @@
 #include <string>
 #include <sstream>
 #include <cmath>
-using namespace std;
 
 /*
 ====================================================================================
@@ -13,14 +12,20 @@ OBJECT class
     - colour
 ====================================================================================
 */
+
 Object::Object()
 {
-    
+    this->pos = Vec2D(0.0, 0.0);
+    this->vel = Vec2D(0.0, 0.0);
+    this->acl = Vec2D(0.0, -3000.0);
+    this->mass = 10;
+    this->restitutionCoeff = 0.8;
+    this->colour = {1.0, 0.0, 0.0};
 }
 
 Object::Object(const Vec2D &pos, const Vec2D &vel, const Vec2D &acl, 
                 const float mass, const float restitutionCoeff, 
-                const vector<float> &colour)
+                const std::vector<float> &colour)
 {
     this->pos = pos;
     this->vel = vel;
@@ -28,11 +33,6 @@ Object::Object(const Vec2D &pos, const Vec2D &vel, const Vec2D &acl,
     this->mass = mass;
     this->restitutionCoeff = restitutionCoeff;
     this->colour = colour;
-}
-
-Object::~Object()
-{
-
 }
 
 void Object::update(float dt)
@@ -61,14 +61,10 @@ CIRCLE class, extends OBJECT
     - adds radius attribute
 ====================================================================================
 */
-Circle::Circle()
-{
-
-}
 
 Circle::Circle(const Vec2D &pos, const Vec2D &vel, const Vec2D &acl, 
                 const float mass, const float restitutionCoeff, 
-                const vector<float> &colour, const float radius)
+                const std::vector<float> &colour, const float radius)
 {
     this->pos = pos;
     this->vel = vel;
@@ -77,11 +73,6 @@ Circle::Circle(const Vec2D &pos, const Vec2D &vel, const Vec2D &acl,
     this->restitutionCoeff = restitutionCoeff;
     this->colour = colour;
     this->radius = radius;
-}
-
-Circle::~Circle()
-{
-
 }
 
 /*
@@ -109,7 +100,13 @@ RectBounds::~RectBounds()
     - x and y components
 ====================================================================================
 */
-Vec2D::Vec2D(float x = 0.0, float y = 0.0)
+Vec2D::Vec2D()
+{
+    xComp = 0.0; yComp = 0.0;
+    len = 0.0;
+}
+
+Vec2D::Vec2D(float x, float y)
 {
     xComp = x; yComp = y;
     computeLength();
@@ -194,12 +191,12 @@ void Vec2D::mirrorY()
 }
 
 // outputs this vector in the form (x, y)
-string Vec2D::toString()
+std::string Vec2D::toString()
 {
-    ostringstream ssx, ssy;
-    ssx << x;
-    ssy << y;
+    std::ostringstream ssx, ssy;
+    ssx << xComp;
+    ssy << yComp;
 
-    string output = "(" + ssx.str() + ", " + ssy.str() + ")";
+    std::string output = "(" + ssx.str() + ", " + ssy.str() + ")";
     return output;
 }

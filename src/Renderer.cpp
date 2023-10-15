@@ -1,5 +1,7 @@
 #include "../include/Renderer.h"
 #include <cmath>
+#define GLFW_DLL
+#include "../include/GLFW/glfw3.h"
 
 #define PI acos(-1)
 
@@ -23,9 +25,8 @@ void Renderer::render(Solver &solver)
     float vectorScale = 0.02;
     int lineWidth = 3;
 
-    for (int i = 0; i < objects.size(); i++)
+    for (auto &obj : objects)
     {
-        Circle& obj = objects[i];
         float red = obj.colour[0];
         float green = obj.colour[1];
         float blue = obj.colour[2];

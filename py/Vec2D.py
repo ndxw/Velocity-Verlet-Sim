@@ -2,9 +2,9 @@ from math import sqrt
 
 class Vec2D:
 
-    def __init__(self, x, y):
-        self.x = float(x)
-        self.y = float(y)
+    def __init__(self, x: float, y: float):
+        self.x = x
+        self.y = y
         self.mag = sqrt(x**2 + y**2)
 
     @staticmethod

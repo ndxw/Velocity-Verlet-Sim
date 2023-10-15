@@ -4,42 +4,32 @@ from OpenGL.GLU import *
 from OpenGL.GLUT import *
 from Solver import *
 from Renderer import *
-from time import sleep
+from Timer import time_this
+from time import sleep, perf_counter_ns
 from random import randrange
 
-WINDOW_W, WINDOW_H = 1000, 1000
-SPAWN_INTERVAL = 0.1                # in seconds
-prev_spawn = 0.0                    # timestamp of previous ball spawned
+WINDOW_W, WINDOW_H = 700, 700
 
-solver = Solver()
-
-# Generates a ball with a random radius and mass
-def generate_ball():
-     radius = randrange(20, 75, 5)
-     mass = radius
-     pos = Vec2D(WINDOW_W * 0.25, WINDOW_H * 0.75)
-     vel = Vec2D(4000.0, 1000.0)
-     acl = Vec2D(0.0, 0.0)
-     return Circle(radius, pos, vel, acl, mass)
+solver = Solver(WINDOW_W, WINDOW_H)
 
 def showScreen():
-    global prev_spawn
-
+    t1 = perf_counter_ns()
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT) # Remove everything from screen (i.e. displays all black)
     glLoadIdentity()
+    t2 = perf_counter_ns
     iterate()
 
     solver.update_solver()
     Renderer.render(solver)
 
-    # TODO: implement object addition with mouse
-    if solver.time - prev_spawn >= SPAWN_INTERVAL and solver.object_count < solver.MAX_OBJECTS:
-        solver.add_object(generate_ball())
-        prev_spawn = solver.time
+    # TODO: object addition with mouse
+    if solver.time - solver.prev_spawn >= solver.SPAWN_INTERVAL and solver.object_count < solver.MAX_OBJECTS:
+        solver.add_object()
         
     glutSwapBuffers()
     sleep(solver.DT)    # framerate period
 
+@time_this
 def iterate():
 
     glViewport(0, 0, WINDOW_W, WINDOW_H)

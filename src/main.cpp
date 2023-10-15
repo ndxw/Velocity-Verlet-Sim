@@ -1,6 +1,8 @@
 #include "../include/Renderer.h"
-#define GLFW_INCLUDE_NONE
+#define GLFW_DLL
+#include "../include/glad/glad.h"
 #include "../include/GLFW/glfw3.h"
+#include <iostream>
 
 static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
@@ -15,7 +17,7 @@ int main()
 {
     const int WINDOW_W = 1000;
     const int WINDOW_H = 1000;
-    const float SPAWN_INTERVAL = 0.5;
+    //const float SPAWN_INTERVAL = 0.5;
 
     //Solver solver = new Solver();
 
@@ -25,6 +27,10 @@ int main()
     if (!glfwInit())
         return -1;
 
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+
     /* Create a windowed mode window and its OpenGL context */
     window = glfwCreateWindow(WINDOW_W, WINDOW_H, "Velocity-Verlet Physics Simulation", NULL, NULL);
     if (!window)
@@ -33,10 +39,16 @@ int main()
         return -1;
     }
 
+    if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
+    {
+        std::cout << "Failed to initialize GLAD" << std::endl;
+        return -1;
+    }
+
     /* Make the window's context current */
     glfwMakeContextCurrent(window);
     glfwSwapInterval(1);
-    glfwSetKeyCallback(window, key_callback); 
+    //glfwSetKeyCallback(window, key_callback); 
 
     /* Loop until the user closes the window */
     while (!glfwWindowShouldClose(window))

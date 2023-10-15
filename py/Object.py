@@ -1,4 +1,4 @@
-from random import random
+from random import uniform
 from Vec2D import Vec2D
 
 class Object:
@@ -8,11 +8,11 @@ class Object:
         self.vel = vel
         self.acl = acl
         self.mass = mass
-        self.COLLISION_COEFF = 0.8
+        self.COLLISION_COEFF = 0.95
 
-        red = random()
-        green = random()
-        blue = random()
+        red = uniform(0.0, 0.8)
+        green = uniform(0.0, 0.8)
+        blue = uniform(0.0, 0.8)
         self.colour = (red, green, blue)
 
     def update(self, dt):

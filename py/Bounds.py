@@ -1,5 +1,3 @@
-
-
 '''
 Bounds.render() takes colour argument in the form of
 3-element tuple, each element being the normalized forms of

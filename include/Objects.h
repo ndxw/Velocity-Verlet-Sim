@@ -14,6 +14,7 @@ class Vec2D
         void computeLength();
 
     public:
+        Vec2D();
         Vec2D(float, float);
         ~Vec2D();
 
@@ -54,10 +55,9 @@ class Circle: public Object
     public:
         float radius;
 
-        Circle();
         Circle(const Vec2D &, const Vec2D &, const Vec2D &, 
                 const float, const float, const std::vector<float> &, const float);
-        ~Circle();
+
 };
 
 class RectBounds
