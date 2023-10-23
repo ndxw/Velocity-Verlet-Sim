@@ -8,7 +8,8 @@ class Object:
         self.vel = vel
         self.acl = acl
         self.mass = mass
-        self.COLLISION_COEFF = 0.95
+        self.collided = False
+        self.COLLISION_COEFF = 0.8
 
         red = uniform(0.0, 0.8)
         green = uniform(0.0, 0.8)

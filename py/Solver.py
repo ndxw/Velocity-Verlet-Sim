@@ -36,6 +36,7 @@ class Solver:
             self.apply_gravity()
             self.apply_collisions()
             self.update_objects(self.SUBDT)
+            self.apply_coeff_restitution()
             self.apply_bounds()
 
         self.time += self.DT
@@ -47,7 +48,8 @@ class Solver:
 
     # Generates a ball with a random radius and mass
     def generate_ball(self):
-        diameter = randrange(self.OBJ_MIN_SIZE, self.OBJ_MAX_SIZE, 5)
+        # diameter = randrange(self.OBJ_MIN_SIZE, self.OBJ_MAX_SIZE, 5)
+        diameter = self.OBJ_MAX_SIZE
         mass = diameter
         pos = Vec2D(self.WINDOW_W * 0.25, self.WINDOW_H * 0.75)
         vel = Vec2D(2000.0, -10.0)
@@ -56,12 +58,12 @@ class Solver:
         acl = Vec2D(0.0, 0.0)
         return Circle(diameter//2, pos, vel, acl, mass)
     
-    @time_this
+    # @time_this
     def apply_gravity(self):
         for object in self.objects:
             object.acl = self.GRAVITY
 
-    @time_this
+    # @time_this
     def apply_collisions(self):
         self.grid.partition_objects(self.objects)
         #self.grid.to_string()
@@ -118,9 +120,9 @@ class Solver:
                         Update object velocities
                         '''
                         object1.vel = Vec2D.subtract(object1.vel, pos_diff_12_scaled)
-                        object1.vel = Vec2D.scale(object1.vel, object1.COLLISION_COEFF)
+                        #object1.vel = Vec2D.scale(object1.vel, object1.COLLISION_COEFF)
                         object2.vel = Vec2D.subtract(object2.vel, pos_diff_21_scaled)
-                        object2.vel = Vec2D.scale(object2.vel, object2.COLLISION_COEFF)
+                        #object2.vel = Vec2D.scale(object2.vel, object2.COLLISION_COEFF)
 
                         '''
                         Update positions by shifting each object by half the overlap
@@ -134,10 +136,22 @@ class Solver:
 
                         update_pos2 = Vec2D.scale(pos_diff_21, 0.5 * overlap / pos_diff_21.mag)
                         object2.pos = Vec2D.add(object2.pos, update_pos2)
+
+                        # set collision status for velocity scaling later
+                        object1.collided = True
+                        object2.collided = True
                
         self.grid.cells = self.grid.generate_cells()
 
-    @time_this
+
+    def apply_coeff_restitution(self):
+        for object in self.objects:
+            if object.collided:
+                object.vel = Vec2D.scale(object.vel, object.COLLISION_COEFF)
+                object.collided = False
+
+
+    # @time_this
     def apply_bounds(self):
 
         for object in self.objects:
@@ -166,7 +180,7 @@ class Solver:
                 object.vel.mirror_x()
                 object.vel = Vec2D.scale(object.vel, object.COLLISION_COEFF)
 
-    @time_this
+    # @time_this
     def update_objects(self, dt):
         for object in self.objects:
             object.update(dt)
