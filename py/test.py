@@ -14,3 +14,7 @@ import numpy as np
 # sum = np.subtract(minuend, subtrahend)
 # print(sum)
 
+root2 = np.array([1.0, -1.0])
+test = root2 * 2 * 10
+print(root2)
+print(test)
