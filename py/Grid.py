@@ -5,8 +5,8 @@ class Grid:
     def __init__(self, cell_size: int, window_width: int, window_height: int):
         self.cell_size = cell_size
         # grid dimensions
-        self.width = window_width // cell_size
-        self.height = window_height // cell_size
+        self.width = int(window_width // cell_size + 1)
+        self.height = int(window_height // cell_size + 1)
         self.cells = self.generate_cells()
 
     def generate_cells(self):
@@ -17,13 +17,12 @@ class Grid:
         return cells
     
     def position_to_cell(self, pos: Vec2D):
-        # print(f'pos: ({pos.x}, {pos.y})')
-        # print(f'y_cell_idx: {pos.y // self.cell_size}, x_cell_idx: {pos.x // self.cell_size}')
-        return int(pos.y // self.cell_size) + int(pos.x // self.cell_size * self.height)
+        return int(pos.y // self.cell_size) + int((pos.x // self.cell_size) * self.height)
     
     def partition_objects(self, objects: list):
         for object in objects:
             cell_idx = self.position_to_cell(pos=object.pos)
+            #print(f'W: {self.width}, H: {self.height}, cell_idx: {cell_idx}, pos: {object.pos.to_string()}, rad: {object.radius}')
             self.cells[cell_idx].append(object)
 
     def to_string(self):

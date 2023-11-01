@@ -35,34 +35,34 @@ class Renderer:
             glEnd()
 
         # render object velocity vectors
-        vector_scale = 0.02
-        line_width = 3
+        # vector_scale = 0.02
+        # line_width = 3
 
-        for object in solver.objects:
+        # for object in solver.objects:
 
-            glColor(1-object.colour[0], 1-object.colour[1], 1-object.colour[2])
-            glLineWidth(line_width)
+        #     glColor(1-object.colour[0], 1-object.colour[1], 1-object.colour[2])
+        #     glLineWidth(line_width)
 
-            glBegin(GL_LINES)
-            glVertex2d(object.pos.x, object.pos.y)
-            glVertex2d(object.pos.x + vector_scale * object.vel.x, object.pos.y + vector_scale * object.vel.y)
-            glEnd()
+        #     glBegin(GL_LINES)
+        #     glVertex2d(object.pos.x, object.pos.y)
+        #     glVertex2d(object.pos.x + vector_scale * object.vel.x, object.pos.y + vector_scale * object.vel.y)
+        #     glEnd()
 
-        # render grid
-        line_width = 1
+        # # render grid
+        # line_width = 1
 
-        glColor(0, 0, 0)
-        glLineWidth(line_width)
+        # glColor(0, 0, 0)
+        # glLineWidth(line_width)
 
-        # horizonal lines
-        for i in range(solver.grid.cell_size, solver.WINDOW_H, solver.grid.cell_size):
-            glBegin(GL_LINES)
-            glVertex2d(0, i)
-            glVertex2d(solver.WINDOW_W, i)
-            glEnd()
-        # vertical lines
-        for i in range(solver.grid.cell_size, solver.WINDOW_W, solver.grid.cell_size):
-            glBegin(GL_LINES)
-            glVertex2d(i, 0)
-            glVertex2d(i, solver.WINDOW_H)
-            glEnd()
+        # # horizonal lines
+        # for i in range(solver.grid.cell_size, solver.WINDOW_H, solver.grid.cell_size):
+        #     glBegin(GL_LINES)
+        #     glVertex2d(0, i)
+        #     glVertex2d(solver.WINDOW_W, i)
+        #     glEnd()
+        # # vertical lines
+        # for i in range(solver.grid.cell_size, solver.WINDOW_W, solver.grid.cell_size):
+        #     glBegin(GL_LINES)
+        #     glVertex2d(i, 0)
+        #     glVertex2d(i, solver.WINDOW_H)
+        #     glEnd()

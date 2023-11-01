@@ -9,7 +9,7 @@ class Object:
         self.acl = acl
         self.mass = mass
         self.collided = False
-        self.COLLISION_COEFF = 0.8
+        self.COLLISION_COEFF = 0.95
 
         red = uniform(0.0, 0.8)
         green = uniform(0.0, 0.8)
