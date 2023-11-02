@@ -67,7 +67,6 @@ class Solver:
     # @time_this
     def apply_collisions(self):
         self.grid.partition_objects(self.objects)
-        #self.grid.to_string()
 
         for k in range(len(self.grid.cells)):
             # don't iterate over edge cells
@@ -122,11 +121,9 @@ class Solver:
                     Update object velocities
                     '''
                     object1.vel = Vec2D.subtract(object1.vel, pos_diff_12_scaled)
-                    #object1.vel = Vec2D.scale(object1.vel, object1.COLLISION_COEFF)
                     object2.vel = Vec2D.subtract(object2.vel, pos_diff_21_scaled)
-                    #object2.vel = Vec2D.scale(object2.vel, object2.COLLISION_COEFF)
 
-                    '''
+                    '''===========================================================
                     Update positions by shifting each object by half the overlap
                     in opposite directions along the collision axis
                     '''
@@ -185,36 +182,3 @@ class Solver:
     def update_objects(self, dt):
         for object in self.objects:
             object.update(dt)
-
-    # do not use: don't need to iterate over edge cells
-    # def is_valid_cell(self, cell: int, current_cell: int):
-    #     # naive method
-        
-    #     if current_cell < self.grid.height: # column 0
-    #         # left of grid and NW, W, SW cell OR bottom-left of grid and S, SE cell OR top-left of grid and N, NE cell
-    #         if (cell in (current_cell-self.grid.height, current_cell-self.grid.height-1, current_cell-self.grid.height+1)) or \
-    #             (current_cell % self.grid.height == 0 and cell in (current_cell-1, current_cell-1+self.grid.height)) or \
-    #             (current_cell % self.grid.height == self.grid.height-1 and cell in (current_cell+1, current_cell+1+self.grid.height)):
-    #             return False
-
-    #     elif current_cell >= len(self.grid.cells) - self.grid.height: # column width-1
-    #         # right of grid and NE, E, SE cell OR bottom-right of grid and S, SW cell OR top-right of grid and N, NW cell
-    #         if (cell in (current_cell+self.grid.height, current_cell+self.grid.height-1, current_cell+self.grid.height+1)) or \
-    #             (current_cell % self.grid.height == 0 and cell in (current_cell-1, current_cell-1-self.grid.height)) or \
-    #             (current_cell % self.grid.height == self.grid.height-1 and cell in (current_cell+1, current_cell+1-self.grid.height)):
-    #             return False
-            
-    #     elif current_cell % self.grid.height == 0:    # row 0
-    #         # bottom of grid and SW, S, SE cell AND not in corner (already checked by previous conditions)
-    #         if cell in (current_cell-1, current_cell-1-self.grid.height, current_cell-1+self.grid.height):
-    #             return False
-
-    #     elif current_cell % self.grid.height == self.grid.height-1:   # row height-1
-    #         # top of grid and NW, N, NE cell  AND not in corner (already checked by previous conditions)
-    #         if cell in (current_cell+1, current_cell+1-self.grid.height, current_cell+1+self.grid.height):
-    #             return False
-
-    #     return True
-
-    
-    
